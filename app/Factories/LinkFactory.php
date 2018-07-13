@@ -1,6 +1,7 @@
 <?php
 namespace App\Factories;
 
+use App\Helpers\MutexHelper;
 use App\Models\Link;
 use App\Helpers\CryptoHelper;
 use App\Helpers\LinkHelper;
@@ -55,70 +56,70 @@ class LinkFactory {
                 looks like a shortened URL.');
         }
 
-        if (!$is_secret && (!isset($custom_ending) || $custom_ending === '') && (LinkHelper::longLinkExists($long_url, $creator) !== false)) {
-            // if link is not specified as secret, is non-custom, and
-            // already exists in Polr, lookup the value and return
-            $existing_link = LinkHelper::longLinkExists($long_url, $creator);
-            return self::formatLink($existing_link);
+        // Lock mutex for 1 second
+        $mutexHelper = new MutexHelper('shorten_link');
+        register_shutdown_function(function(MutexHelper $mutexHelper) {
+            if ($mutexHelper->isAcquired()) {
+                $mutexHelper->releaseLock();
+            }
+        }, $mutexHelper);
+
+        if (!$mutexHelper->acquireLock()) {
+            throw new \Exception('Could not acquire resources in time to generate shortlink. Please try again.');
         }
 
-        if (isset($custom_ending) && $custom_ending !== '') {
-            // has custom ending
-            $ending_conforms = LinkHelper::validateEnding($custom_ending);
-            if (!$ending_conforms) {
-                throw new \Exception('Sorry, but custom endings
+        if ($is_secret || $custom_ending !== '' || (false === $link = LinkHelper::longLinkExists($long_url, $creator))) {
+            if (isset($custom_ending) && $custom_ending !== '') {
+                // has custom ending
+                $ending_conforms = LinkHelper::validateEnding($custom_ending);
+                if (!$ending_conforms) {
+                    throw new \Exception('Sorry, but custom endings
                     can only contain alphanumeric characters, hyphens, and underscores.');
+                }
+
+                $ending_in_use = LinkHelper::linkExists($custom_ending);
+                if ($ending_in_use) {
+                    throw new \Exception('Sorry, but this URL ending is already in use.');
+                }
+
+                $link_ending = $custom_ending;
+            } else {
+                if (env('SETTING_PSEUDORANDOM_ENDING')) {
+                    // generate a pseudorandom ending
+                    $link_ending = LinkHelper::findPseudoRandomEnding();
+                } else {
+                    // generate a counter-based ending or use existing ending if possible
+                    $link_ending = LinkHelper::findSuitableEnding();
+                }
             }
 
-            $ending_in_use = LinkHelper::linkExists($custom_ending);
-            if ($ending_in_use) {
-                throw new \Exception('Sorry, but this URL ending is already in use.');
+            $link = new Link;
+            $link->short_url = $link_ending;
+            $link->long_url = $long_url;
+            $link->ip = $link_ip;
+            $link->is_custom = $custom_ending != null;
+
+            $link->is_api = $is_api;
+
+            if ($creator) {
+                // if user is logged in, save user as creator
+                $link->creator = $creator;
             }
 
-            $link_ending = $custom_ending;
-        }
-        else {
-            if (env('SETTING_PSEUDORANDOM_ENDING')) {
-                // generate a pseudorandom ending
-                $link_ending = LinkHelper::findPseudoRandomEnding();
+            if ($is_secret) {
+                $link->secret_key = CryptoHelper::generateRandomHex((int) env('POLR_SECRET_BYTES'));
             }
-            else {
-                // generate a counter-based ending or use existing ending if possible
-                $link_ending = LinkHelper::findSuitableEnding();
-            }
+
+            $link->save();
         }
 
-        $link = new Link;
-        $link->short_url = $link_ending;
-        $link->long_url  = $long_url;
-        $link->ip        = $link_ip;
-        $link->is_custom = $custom_ending != null;
-
-        $link->is_api    = $is_api;
-
-        if ($creator) {
-            // if user is logged in, save user as creator
-            $link->creator = $creator;
-        }
-
-        if ($is_secret) {
-            $rand_bytes_num = intval(env('POLR_SECRET_BYTES'));
-            $secret_key = CryptoHelper::generateRandomHex($rand_bytes_num);
-            $link->secret_key = $secret_key;
-        }
-        else {
-            $secret_key = false;
-        }
-
-        $link->save();
-
-        $formatted_link = self::formatLink($link_ending, $secret_key);
+        $mutexHelper->releaseLock();
 
         if ($return_object) {
             return $link;
         }
 
-        return $formatted_link;
+        return self::formatLink($link->short_url, $link->secret_key);
     }
 
 }

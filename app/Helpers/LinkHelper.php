@@ -79,9 +79,7 @@ class LinkHelper {
         if ($link == null) {
             return false;
         }
-        else {
-            return $link->short_url;
-        }
+        return $link;
     }
 
     static public function validateEnding($link_ending) {
