@@ -1,0 +1,8 @@
+.github
+.git
+.gitignore
+.gitattributes
+.DS_Store
+README.md
+.env*
+!deploy
