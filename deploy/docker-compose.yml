@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: polr
+      MYSQL_USER: root
+    image: mysql:5.7
+    ports:
+      - "3306:3306/tcp"
+    volumes:
+      - ../shared-data/polr:/var/lib/mysql
+    container_name: polr_mysql
+  web:
+    environment:
+      DB_HOST: db
+      APP_KEY: "not_so_secret_key_should_change!"
+      CACHE_DRIVER: "file"
+      SESSION_DRIVER: "file"
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8000:8000/tcp"
+    links:
+      - db
+    depends_on:
+      - db
+    env_file:
+      - /var/projects/secrets/polr.env
+    restart: on-failure:2
