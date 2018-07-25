@@ -1,0 +1,3 @@
+@Library('pipeline-shared') _
+
+dockerDeliveryPipeline(registryName: "polr", containerName: "polr", servicesToUpdate: ["polr-service"])
