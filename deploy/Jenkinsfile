@@ -1,3 +1,3 @@
 @Library('pipeline-shared') _
 
-dockerDeliveryPipeline(registryName: "polr", deployPath: "deploy/", containerName: "polr", servicesToUpdate: ["polr-service"])
+dockerDeliveryPipeline(registryName: "polr", deployPath: "deploy/", deployToStage: false, containerName: "polr", servicesToUpdate: ["polr-service"])
