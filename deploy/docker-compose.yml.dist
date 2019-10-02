@@ -13,6 +13,7 @@ services:
     container_name: polr_mysql
   web:
     environment:
+      APP_ENV: "local"
       DB_HOST: db
       APP_KEY: "not_so_secret_key_should_change!"
       CACHE_DRIVER: "file"
@@ -20,6 +21,8 @@ services:
     build:
       context: ../
       dockerfile: deploy/Dockerfile
+      args:
+        APP_ENV: "local"
     ports:
       - "8000:8000/tcp"
     links:
