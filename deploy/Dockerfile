@@ -5,6 +5,7 @@ MAINTAINER eKomi Team <anawaz@ekomi-services.com>
 EXPOSE 8000
 
 ARG APP_ENV=production
+ARG UID=1000
 
 ENV COMPOSER_VERSION 1.6.3
 ENV APP_ENV ${APP_ENV}
@@ -64,7 +65,7 @@ RUN if [ "$APP_ENV" = "local" ] ; then \
     openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt ;fi
 
 RUN addgroup -S www-data && \
-    adduser -S -s /bin/bash -u 1001 -G www-data www-data
+    adduser -S -s /bin/bash -u ${UID} -G www-data www-data
 
 RUN touch /var/run/nginx.pid && \
     chown -R www-data:www-data /var/run/nginx.pid /etc/php7/php-fpm.d
@@ -93,7 +94,7 @@ COPY . /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html && chown -R www-data:www-data /home/www-data
 
-USER 1001
+USER ${UID}
 RUN php /bin/composer.phar global require "hirak/prestissimo:^0.3" && \
     php /bin/composer.phar install --no-dev -o && \
     rm -rf bootstrap/cache/*
@@ -109,7 +110,7 @@ RUN chmod g+rwx /var/run/nginx.pid && \
     chmod -R g+rw /var/www /usr/share/nginx/cache /var/cache/nginx /var/lib/nginx/ /etc/php7/php-fpm.d storage && \
     chown www-data:www-data /sbin/run.sh && chmod u+x /sbin/run.sh
 
-USER 1001
+USER ${UID}
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
 

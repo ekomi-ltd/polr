@@ -45,6 +45,9 @@ initialize_system() {
   sed '/^.*=""$/d'  -i /var/www/html/.env
   sed 's/""/"/g'  -i /var/www/html/.env
 
+  # Running Migrations
+  php artisan migrate
+
   rm -rf bootstrap/cache/*
 }
 
