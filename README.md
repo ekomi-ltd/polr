@@ -16,6 +16,10 @@ Polr is an intrepid, self-hostable open-source link shortening web application w
 The project is setup using docker, so running it for development is fairly simple:
 - Copy docker-compose.yml.dist into docker-compose.yml
 - Run `docker-compose build` then `docker-compose up -d`
+- Add the following line in `/etc/hosts` file of the host OS
+  ```
+  127.0.0.1 fbk.st.test
+  ```
 
 If you're using volume mounting for coding, then for the first time, and also whenever a new composer dependency is
 added in composer.json manually, you must run `composer install` inside docker. The reason for this is that docker does
@@ -25,6 +29,8 @@ issue while benefiting from volume mounting, perform the following extra steps w
 dependencies:
 - Run `docker-compose exec web sh`
 - When inside docker, run `php composer.phar install`
+
+After the setup, the app should be accessible on https://fbk.st.test.
 
 ### Quickstart
 
