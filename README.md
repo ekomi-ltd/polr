@@ -12,6 +12,26 @@ Polr is an intrepid, self-hostable open-source link shortening web application w
 
 [Getting Started](http://docs.polr.me/en/latest/user-guide/installation/) - [API Documentation](http://docs.polr.me/en/latest/developer-guide/api/) - [Contributing](https://github.com/cydrobolt/polr/blob/master/.github/CONTRIBUTING.md) - [Bugs](https://github.com/cydrobolt/polr/issues) - [IRC](http://webchat.freenode.net/?channels=#polr)
 
+### Setup
+The project is setup using docker, so running it for development is fairly simple:
+- Copy docker-compose.yml.dist into docker-compose.yml
+- Run `docker-compose build` then `docker-compose up -d`
+- Add the following line in `/etc/hosts` file of the host OS
+  ```
+  127.0.0.1 fbk.st.test
+  ```
+
+If you're using volume mounting for coding, then for the first time, and also whenever a new composer dependency is
+added in composer.json manually, you must run `composer install` inside docker. The reason for this is that docker does
+not mount the volume while building the image. So when the volume is mounted on docker run, then the directory
+`/var/www/html` will be overwritten and the changes in `/var/www/html/vendor` directory will be lost. To overcome this
+issue while benefiting from volume mounting, perform the following extra steps whenever there's a change in composer
+dependencies:
+- Run `docker-compose exec web sh`
+- When inside docker, run `php composer.phar install`
+
+After the setup, the app should be accessible on https://fbk.st.test.
+
 ### Quickstart
 
 Polr is written in PHP and Lumen, using MySQL as its primary database.
