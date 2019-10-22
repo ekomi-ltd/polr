@@ -13,6 +13,8 @@ services:
     container_name: polr_mysql
   web:
     environment:
+      APP_ENV: "local"
+      APP_DOMAIN: "fbk.st.test"
       DB_HOST: db
       APP_KEY: "not_so_secret_key_should_change!"
       CACHE_DRIVER: "file"
@@ -20,8 +22,14 @@ services:
     build:
       context: ../
       dockerfile: deploy/Dockerfile
+      args:
+        APP_ENV: "local"
+        APP_DOMAIN: "fbk.st.test"
+        UID: 1000 # change to your user id if different. How to check UID : execute on host machine `id -u ${whoami}`
     ports:
-      - "8000:8000/tcp"
+      - "443:8000/tcp"
+    volumes:
+      - ../:/var/www/html
     links:
       - db
     depends_on:
