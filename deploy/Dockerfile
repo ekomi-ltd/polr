@@ -20,7 +20,7 @@ COPY composer.json composer.lock ./
 
 #Install composer dependencies in parallel fashion
 RUN composer global require "hirak/prestissimo:^0.3" && \
-    composer install --no-scripts --no-autoloader
+    composer install --no-autoloader
 
 # Copy source code from current host directory /var/www/html in container
 COPY . /var/www/html/
