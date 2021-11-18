@@ -8,7 +8,7 @@ MAINTAINER Coeus Team <aman.mukhtar@coeus-solutions.de>
 EXPOSE 8000
 
 #Environment variables
-ENV RUN_SCRIPTS=0
+ENV RUN_SCRIPTS=1
 ENV SKIP_CHOWN=1
 ENV SKIP_COMPOSER=1
 
@@ -20,7 +20,7 @@ COPY composer.json composer.lock ./
 
 #Install composer dependencies in parallel fashion
 RUN composer global require "hirak/prestissimo:^0.3" && \
-    composer install --no-autoloader
+    composer install --no-scripts --no-autoloader
 
 # Copy source code from current host directory /var/www/html in container
 COPY . /var/www/html/
