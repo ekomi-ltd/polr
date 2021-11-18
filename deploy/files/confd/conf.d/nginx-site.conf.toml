@@ -1,3 +1,0 @@
-[template]
-src = "nginx-site.conf.tmpl"
-dest = "/etc/nginx/conf.d/default.conf"
