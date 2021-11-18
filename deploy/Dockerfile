@@ -1,5 +1,5 @@
 # The base linux container
-FROM richarvey/nginx-php-fpm:1.9.1
+FROM richarvey/nginx-php-fpm:1.8.2
 
 # Person / organization responsible for maintenance
 MAINTAINER Coeus Team <aman.mukhtar@coeus-solutions.de>
