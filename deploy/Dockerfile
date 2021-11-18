@@ -8,7 +8,7 @@ MAINTAINER Coeus Team <aman.mukhtar@coeus-solutions.de>
 EXPOSE 8000
 
 #Environment variables
-ENV RUN_SCRIPTS=1
+ENV RUN_SCRIPTS=0
 ENV SKIP_CHOWN=1
 ENV SKIP_COMPOSER=1
 
