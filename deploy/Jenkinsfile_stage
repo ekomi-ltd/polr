@@ -1,15 +1,3 @@
-@Library('pipeline-shared@pipeline-cleanup') _
+@Library('pipeline-shared') _
 
-dockerDeliveryPipeline([
-        projectName: "polr",
-        components:
-        [
-            [
-                "polr-service" : [
-                    environmentPath: "/polr-service/polr",
-                    containerName: "polr"
-                ]
-            ]
-        ]
-    ]
-)
+dockerDeliveryPipeline(registryName: "polr", deployPath: "deploy/", deployToStage: true, containerName: "polr")
