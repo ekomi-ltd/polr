@@ -21,5 +21,5 @@ COPY . /var/www/html/
 RUN ls
 
 RUN composer global require "hirak/prestissimo:^0.3" && \
-    composer install && \
+    composer install --no-dev -o && \
     rm -rf bootstrap/cache/*
