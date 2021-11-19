@@ -8,9 +8,9 @@ MAINTAINER Coeus Team <aman.mukhtar@coeus-solutions.de>
 EXPOSE 8000
 
 #Environment variables
-#ENV RUN_SCRIPTS=1
-#ENV SKIP_CHOWN=1
-#ENV SKIP_COMPOSER=1
+ENV RUN_SCRIPTS=1
+ENV SKIP_CHOWN=1
+ENV SKIP_COMPOSER=1
 
 # Set current working directory for host commands to /var/www/html
 WORKDIR /var/www/html/
@@ -21,9 +21,5 @@ COPY . /var/www/html/
 RUN ls
 
 RUN composer global require "hirak/prestissimo:^0.3" && \
-    composer install
-
-#Setting permissions
-RUN chown -R nginx:nginx /var/www/html && \
-    chmod -R g+rw storage && \
+    composer install && \
     rm -rf bootstrap/cache/*
