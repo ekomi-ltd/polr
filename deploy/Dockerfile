@@ -18,6 +18,9 @@ WORKDIR /var/www/html/
 # Copy source code from current host directory /var/www/html in container
 COPY . /var/www/html/
 
+RUN composer global require "hirak/prestissimo:^0.3" && \
+    composer install --no-dev -o
+
 #Setting permissions
 RUN chown -R nginx:nginx /var/www/html && \
     chmod -R g+rw storage && \
