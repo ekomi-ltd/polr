@@ -5,7 +5,7 @@ FROM richarvey/nginx-php-fpm:1.9.1
 MAINTAINER Coeus Team <aman.mukhtar@coeus-solutions.de>
 
 # The port this docker will listen to
-EXPOSE 8000
+EXPOSE 80
 
 #Environment variables
 ENV RUN_SCRIPTS=1
