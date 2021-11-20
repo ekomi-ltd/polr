@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class StaticPageController extends Controller {
     /**
@@ -9,6 +10,7 @@ class StaticPageController extends Controller {
      * @return Response
      */
     public function displayAbout(Request $request) {
+        Log::info('in about page polr');
         $user_role = session('role');
         return view('about', ['role' => $user_role, 'no_div_padding' => true]);
     }
