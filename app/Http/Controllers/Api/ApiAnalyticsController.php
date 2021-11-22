@@ -21,7 +21,7 @@ class ApiAnalyticsController extends ApiController {
         }
 
         $validator = \Validator::make($request->all(), [
-            'url_ending' => 'required|alpha_dash',
+            'url_ending' => ['required' , 'regex:' . LinkHelper::VALID_URL_ENDING_REGEX],
             'stats_type' => 'alpha_num',
             'left_bound' => 'date',
             'right_bound' => 'date'

@@ -4,6 +4,11 @@ use App\Models\Link;
 use App\Helpers\BaseHelper;
 
 class LinkHelper {
+    /**
+     * Defines regex for validating URL ending
+     */
+    const VALID_URL_ENDING_REGEX = '/^[a-zA-Z0-9\-_\.\@]+$/';
+
     static public function checkIfAlreadyShortened($long_link) {
         /**
          * Provided a long link (string),
@@ -83,7 +88,7 @@ class LinkHelper {
     }
 
     static public function validateEnding($link_ending) {
-        $is_valid_ending = preg_match('/^[a-zA-Z0-9-_]+$/', $link_ending);
+        $is_valid_ending = preg_match(self::VALID_URL_ENDING_REGEX, $link_ending);
         return $is_valid_ending;
     }
 
