@@ -20,12 +20,8 @@ WORKDIR /var/www/html/
 #Copy composer related files
 COPY composer.json composer.lock ./
 
-USER nginx
-
-RUN whoami
-
-USER www-data
-
+RUN chown -R nginx:nginx /var/www/html
+USER nginx:nginx
 RUN whoami
 
 #Install composer dependencies in parallel fashion
