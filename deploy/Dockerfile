@@ -34,5 +34,3 @@ RUN composer dump-autoload --optimize
 RUN chown -R nginx:nginx /var/www/html && \
     chmod -R g+rw storage && \
     rm -rf bootstrap/cache/*
-
-RUN printenv $_ENV
