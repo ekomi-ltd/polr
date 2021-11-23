@@ -13,7 +13,7 @@ ENV SKIP_CHOWN=1
 ENV SKIP_COMPOSER=1
 ARG UID=1000
 
-RUN echo "$USER"
+RUN whoami
 
 # Set current working directory for host commands to /var/www/html
 WORKDIR /var/www/html/
@@ -21,10 +21,17 @@ WORKDIR /var/www/html/
 #Copy composer related files
 COPY composer.json composer.lock ./
 
-RUN adduser -S -s /bin/bash -u ${UID} -G www-data www-data
 USER ${UID}
 
-RUN echo "$USER"
+RUN whoami
+
+USER nginx
+
+RUN whoami
+
+USER www-data
+
+RUN whoami
 
 #Install composer dependencies in parallel fashion
 RUN composer global require "hirak/prestissimo:^0.3" && \
@@ -36,7 +43,7 @@ COPY . /var/www/html/
 #Compose Autoload
 RUN composer dump-autoload --optimize
 
-RUN echo "$USER"
+RUN whoami
 
 #Setting permissions
 RUN chown -R nginx:nginx /var/www/html && \
