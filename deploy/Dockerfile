@@ -37,6 +37,5 @@ RUN composer dump-autoload --optimize
 RUN whoami
 
 #Setting permissions
-RUN chown -R nginx:nginx /var/www/html && \
-    chmod -R g+rw storage && \
+RUN chmod -R g+rw storage && \
     rm -rf bootstrap/cache/*
