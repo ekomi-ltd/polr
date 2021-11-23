@@ -64,8 +64,7 @@ RUN if [ "$APP_ENV" = "local" ] ; then \
     openssl req -new -key server.key -out server.csr -subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=$APP_DOMAIN" && \
     openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt ;fi
 
-RUN addgroup -S www-data && \
-    adduser -S -s /bin/bash -u ${UID} -G www-data www-data
+RUN adduser -S -s /bin/bash -u ${UID} -G www-data www-data
 
 RUN touch /var/run/nginx.pid && \
     chown -R www-data:www-data /var/run/nginx.pid /etc/php7/php-fpm.d
