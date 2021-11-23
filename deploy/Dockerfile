@@ -11,7 +11,6 @@ EXPOSE 8000
 ENV RUN_SCRIPTS=1
 ENV SKIP_CHOWN=1
 ENV SKIP_COMPOSER=1
-ARG UID=1000
 
 RUN whoami
 
@@ -20,10 +19,6 @@ WORKDIR /var/www/html/
 
 #Copy composer related files
 COPY composer.json composer.lock ./
-
-USER ${UID}
-
-RUN whoami
 
 USER nginx
 
