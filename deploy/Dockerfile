@@ -36,6 +36,10 @@ RUN composer dump-autoload --optimize
 
 RUN whoami
 
+USER root
+
+RUN whoami
+
 #Setting permissions
 RUN chmod -R g+rw storage && \
     rm -rf bootstrap/cache/*
