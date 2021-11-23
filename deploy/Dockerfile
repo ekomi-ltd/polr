@@ -12,17 +12,11 @@ ENV RUN_SCRIPTS=1
 ENV SKIP_CHOWN=1
 ENV SKIP_COMPOSER=1
 
-RUN whoami
-
 # Set current working directory for host commands to /var/www/html
 WORKDIR /var/www/html/
 
 #Copy composer related files
 COPY composer.json composer.lock ./
-
-RUN chown -R nginx:nginx /var/www/html
-USER nginx:nginx
-RUN whoami
 
 #Install composer dependencies in parallel fashion
 RUN composer global require "hirak/prestissimo:^0.3" && \
@@ -31,15 +25,14 @@ RUN composer global require "hirak/prestissimo:^0.3" && \
 # Copy source code from current host directory /var/www/html in container
 COPY . /var/www/html/
 
+RUN touch .env
+
 #Compose Autoload
 RUN composer dump-autoload --optimize
 
-RUN whoami
-
-USER root
-
-RUN whoami
-
 #Setting permissions
-RUN chmod -R g+rw storage && \
+RUN chown -R nginx:nginx /var/www/html && \
+    chmod -R g+rw storage && \
     rm -rf bootstrap/cache/*
+
+RUN printenv $_ENV
