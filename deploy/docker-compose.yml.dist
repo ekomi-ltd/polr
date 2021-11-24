@@ -6,9 +6,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: polr
     ports:
-      - "3308:3306/tcp"
+    - "3308:3306/tcp"
     volumes:
-      - ../shared-data/polr:/var/lib/mysql
+    - mysql:/var/lib/mysql
     container_name: polr_db
   web:
     build:
@@ -17,7 +17,6 @@ services:
       args:
         APP_ENV: "local"
         APP_DOMAIN: "fbk.st.test"
-        SSH_PRIVATE_KEY: deploy/id_rsa
         USER_ID: ${USER_ID} # change to your user id if different. How to check UID : execute on host machine `id -u ${whoami}`
     environment:
       APP_ENV: "local"
@@ -33,14 +32,16 @@ services:
       SESSION_DRIVER: "file"
       QUEUE_DRIVER: "database"
       BUGSNAG_API_KEY: ""
+      POLR_ALLOW_ACCT_CREATION: "yes"
     ports:
-      - "443:8000/tcp"
-      - "8000:8000/tcp"
+    - "8000:8000/tcp"
     volumes:
-      - ../:/var/www/html
+    - ../:/var/www/html
     links:
-      - db
+    - db
     depends_on:
-      - db
-    restart: on-failure:2
+    - db
+    restart: on-failure:5
     container_name: polr_web
+volumes:
+  mysql:

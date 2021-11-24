@@ -25,8 +25,6 @@ RUN composer global require "hirak/prestissimo:^0.3" && \
 # Copy source code from current host directory /var/www/html in container
 COPY . /var/www/html/
 
-RUN touch .env
-
 #Compose Autoload
 RUN composer dump-autoload --optimize
 
