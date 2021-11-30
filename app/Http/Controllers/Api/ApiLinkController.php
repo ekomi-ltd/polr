@@ -45,7 +45,7 @@ class ApiLinkController extends ApiController {
 
         // Validate URL form data
         $validator = \Validator::make($request->all(), [
-            'url_ending' => 'required|alpha_dash'
+            'url_ending' => ['required' , 'regex:' . LinkHelper::VALID_URL_ENDING_REGEX]
         ]);
 
         if ($validator->fails()) {
@@ -59,7 +59,7 @@ class ApiLinkController extends ApiController {
 
         $link = LinkHelper::linkExists($url_ending);
 
-        if ($link['secret_key']) {
+        if (!empty($link['secret_key'])) {
             if ($url_key != $link['secret_key']) {
                 throw new ApiException('ACCESS_DENIED', 'Invalid URL code for secret URL.', 401, $response_type);
             }
@@ -71,7 +71,6 @@ class ApiLinkController extends ApiController {
                 'created_at' => $link['created_at'],
                 'clicks' => $link['clicks'],
                 'updated_at' => $link['updated_at'],
-                'created_at' => $link['created_at']
             ], 'lookup', $response_type, $link['long_url']);
         }
         else {

@@ -2,7 +2,11 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-Dotenv::load(__DIR__.'/../');
+try {
+    Dotenv::load(__DIR__.'/../');
+} catch (Exception $exception) {
+    //fix applied from lumen 5.2
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +83,7 @@ $app->routeMiddleware([
 |
 */
 
+$app->register(Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\Yajra\Datatables\DatatablesServiceProvider::class);
 $app->register(\Torann\GeoIP\GeoIPServiceProvider::class);
