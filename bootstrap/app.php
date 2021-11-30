@@ -83,6 +83,7 @@ $app->routeMiddleware([
 |
 */
 
+$app->register(Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\Yajra\Datatables\DatatablesServiceProvider::class);
 $app->register(\Torann\GeoIP\GeoIPServiceProvider::class);
