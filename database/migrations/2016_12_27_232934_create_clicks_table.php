@@ -13,7 +13,8 @@ class CreateClicksTable extends Migration
      */
     public function up()
     {
-        Schema::create('clicks', function(Blueprint $table)
+        //commenting the code to sync the schema with production database
+        /*Schema::create('clicks', function(Blueprint $table)
         {
             $table->engine = 'InnoDB';
 
@@ -31,7 +32,7 @@ class CreateClicksTable extends Migration
             $table->foreign('link_id')->references('id')->on('links')->onDelete('cascade');
 
             $table->timestamps();
-        });
+        });*/
     }
     /**
      * Reverse the migrations.
@@ -40,6 +41,7 @@ class CreateClicksTable extends Migration
      */
     public function down()
     {
-        Schema::drop('clicks');
+        //commenting the code to sync the schema with production database
+       // Schema::drop('clicks');
     }
 }
