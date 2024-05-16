@@ -148,21 +148,21 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
             }, datatables_config));
         }
         if ($('#admin_links_table').length) {
-            /*$scope.datatables['admin_links_table'] = $('#admin_links_table').DataTable($.extend({
+            $scope.datatables['admin_links_table'] = $('#admin_links_table').DataTable($.extend({
                 "ajax": BASE_API_PATH + 'admin/get_admin_links',
 
                 "columns": [
                     {className: 'wrap-text', data: 'short_url', name: 'short_url'},
                     {className: 'wrap-text', data: 'long_url', name: 'long_url'},
-                    {data: 'clicks', name: 'clicks'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'clicks', name: 'clicks', searchable: false},
+                    {data: 'created_at', name: 'created_at', searchable: false},
                     {data: 'creator', name: 'creator'},
 
                     {data: 'disable', name: 'disable', orderable: false, searchable: false},
                     {data: 'delete', name: 'delete', orderable: false, searchable: false}
 
                 ]
-            }, datatables_config));*/
+            }, datatables_config));
         }
 
         $scope.datatables['user_links_table'] = $('#user_links_table').DataTable( {
@@ -171,7 +171,6 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
             processing: true,
             autoWidth: false,
             deferRender: true,
-            searchDelay:3000,
             search: {
                 return: true
             },
