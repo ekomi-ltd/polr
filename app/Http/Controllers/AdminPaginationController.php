@@ -156,8 +156,7 @@ class AdminPaginationController extends Controller {
 
         $username = session('username');
         $user_links = Link::where('creator', $username)
-            ->select(['id', 'short_url', 'long_url', 'clicks', 'created_at'])
-            ->orderBy('id', 'desc');
+            ->select(['id', 'short_url', 'long_url', 'clicks', 'created_at']);
 
         return Datatables::of($user_links)
             ->editColumn('clicks', [$this, 'renderClicksCell'])

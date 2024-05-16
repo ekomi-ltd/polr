@@ -148,7 +148,7 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
             }, datatables_config));
         }
         if ($('#admin_links_table').length) {
-            $scope.datatables['admin_links_table'] = $('#admin_links_table').DataTable($.extend({
+            /*$scope.datatables['admin_links_table'] = $('#admin_links_table').DataTable($.extend({
                 "ajax": BASE_API_PATH + 'admin/get_admin_links',
 
                 "columns": [
@@ -162,7 +162,7 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
                     {data: 'delete', name: 'delete', orderable: false, searchable: false}
 
                 ]
-            }, datatables_config));
+            }, datatables_config));*/
         }
 
         $scope.datatables['user_links_table'] = $('#user_links_table').DataTable( {
