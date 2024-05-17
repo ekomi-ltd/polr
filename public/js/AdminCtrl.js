@@ -154,8 +154,8 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
                 "columns": [
                     {className: 'wrap-text', data: 'short_url', name: 'short_url'},
                     {className: 'wrap-text', data: 'long_url', name: 'long_url'},
-                    {data: 'clicks', name: 'clicks'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'clicks', name: 'clicks', searchable: false},
+                    {data: 'created_at', name: 'created_at', searchable: false},
                     {data: 'creator', name: 'creator'},
 
                     {data: 'disable', name: 'disable', orderable: false, searchable: false},
@@ -165,16 +165,26 @@ polr.controller('AdminCtrl', function($scope, $compile, $timeout) {
             }, datatables_config));
         }
 
-        $scope.datatables['user_links_table'] = $('#user_links_table').DataTable($.extend({
-            "ajax": BASE_API_PATH + 'admin/get_user_links',
-
-            "columns": [
-                {className: 'wrap-text', data: 'short_url', name: 'short_url'},
-                {className: 'wrap-text', data: 'long_url', name: 'long_url'},
-                {data: 'clicks', name: 'clicks'},
-                {data: 'created_at', name: 'created_at'}
-            ]
-        }, datatables_config));
+        $scope.datatables['user_links_table'] = $('#user_links_table').DataTable( {
+            ajax: BASE_API_PATH + 'admin/get_user_links',
+            serverSide: true,
+            processing: true,
+            autoWidth: false,
+            deferRender: true,
+            search: {
+                return: true
+            },
+            columns: [
+                {className: 'wrap-text', data: 'short_url', name: 'short_url', orderable: false},
+                {className: 'wrap-text', data: 'long_url', name: 'long_url', orderable: false},
+                {data: 'clicks', name: 'clicks', searchable: false},
+                {data: 'created_at', name: 'created_at', searchable: false},
+            ],
+            drawCallback: function () {
+                // Compile Angular bindings on each draw
+                $compile($(this))($scope);
+            }
+        });
     };
 
     $scope.reloadLinkTables = function () {
