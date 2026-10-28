@@ -1,4 +1,4 @@
-## [2.4.7] Date : 16-05-2024
+## [2.4.8] Date : 28-10-2026
 
 - PRD-3434 : Apply controls for handling php security vulnerability in Polr
 
